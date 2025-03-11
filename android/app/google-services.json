@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "557579110628",
+    "project_id": "siar-e30b2",
+    "storage_bucket": "siar-e30b2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:557579110628:android:30025e202b184dcc9b04f1",
+        "android_client_info": {
+          "package_name": "com.example.app_siar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "557579110628-8thbq0rjb74m2lr3iafmh60t41drrvn1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeg2elHuS95uE5BqGV9kApKQ1Rbo_0ydM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "557579110628-8thbq0rjb74m2lr3iafmh60t41drrvn1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "557579110628-nuf14uusmtbio1kk9sgkjjhlv8v98lpt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.fireCrud"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:557579110628:android:1ee4fef2b83c3c579b04f1",
+        "android_client_info": {
+          "package_name": "com.example.fire_crud"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "557579110628-8thbq0rjb74m2lr3iafmh60t41drrvn1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeg2elHuS95uE5BqGV9kApKQ1Rbo_0ydM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "557579110628-8thbq0rjb74m2lr3iafmh60t41drrvn1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "557579110628-nuf14uusmtbio1kk9sgkjjhlv8v98lpt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.fireCrud"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
