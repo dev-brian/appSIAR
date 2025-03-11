@@ -16,11 +16,8 @@
    ```bash
    git clone https://github.com/dev-brian/appSIAR.git
 2. **Navega al directorio del proyecto:**
-
-````bash
+    ```bash
     cd appSIAR
-
 3. **Instala las dependencias:**
-
-````bash
+    ```bash
     flutter pub get
