@@ -1,0 +1,2 @@
+C:/Users/emili/appSIAR/android/app/.cxx/Debug/58z72626/x86/CMakeFiles/edit_cache.dir
+C:/Users/emili/appSIAR/android/app/.cxx/Debug/58z72626/x86/CMakeFiles/rebuild_cache.dir
