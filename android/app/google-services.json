@@ -1,0 +1,119 @@
+{
+  "project_info": {
+    "project_number": "557579110628",
+    "firebase_url": "https://siar-e30b2-default-rtdb.firebaseio.com",
+    "project_id": "siar-e30b2",
+    "storage_bucket": "siar-e30b2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:557579110628:android:30025e202b184dcc9b04f1",
+        "android_client_info": {
+          "package_name": "com.example.app_siar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "557579110628-6vqf75snp5vti8660mtpb3dautqa2q8b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeg2elHuS95uE5BqGV9kApKQ1Rbo_0ydM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "557579110628-605tk049sj3ouuiipfatcea68b8ekvkl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "557579110628-lfm7q0ches3h32c9tc4ld21usp7h6jfj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.appSiar"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:557579110628:android:1ee4fef2b83c3c579b04f1",
+        "android_client_info": {
+          "package_name": "com.example.fire_crud"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "557579110628-6vqf75snp5vti8660mtpb3dautqa2q8b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeg2elHuS95uE5BqGV9kApKQ1Rbo_0ydM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "557579110628-605tk049sj3ouuiipfatcea68b8ekvkl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "557579110628-lfm7q0ches3h32c9tc4ld21usp7h6jfj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.appSiar"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:557579110628:android:47e95329ed0992cf9b04f1",
+        "android_client_info": {
+          "package_name": "com.example.siar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "557579110628-6vqf75snp5vti8660mtpb3dautqa2q8b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeg2elHuS95uE5BqGV9kApKQ1Rbo_0ydM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "557579110628-605tk049sj3ouuiipfatcea68b8ekvkl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "557579110628-lfm7q0ches3h32c9tc4ld21usp7h6jfj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.appSiar"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
