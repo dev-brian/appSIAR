@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "557579110628-3b8ul9eir3sjaql5adfqkg77v18v5j1f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.app_siar",
+            "certificate_hash": "b65dcc351d013f6b6cb9e9b6164a9d765e3a82bb"
+          }
+        },
+        {
           "client_id": "557579110628-6vqf75snp5vti8660mtpb3dautqa2q8b.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -32,10 +40,10 @@
               "client_type": 3
             },
             {
-              "client_id": "557579110628-lfm7q0ches3h32c9tc4ld21usp7h6jfj.apps.googleusercontent.com",
+              "client_id": "557579110628-4ueku6n8pmvsnir5rvrtd5tb0skmg8pj.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.appSiar"
+                "bundle_id": "com.example.siar"
               }
             }
           ]
@@ -68,10 +76,10 @@
               "client_type": 3
             },
             {
-              "client_id": "557579110628-lfm7q0ches3h32c9tc4ld21usp7h6jfj.apps.googleusercontent.com",
+              "client_id": "557579110628-4ueku6n8pmvsnir5rvrtd5tb0skmg8pj.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.appSiar"
+                "bundle_id": "com.example.siar"
               }
             }
           ]
@@ -104,10 +112,10 @@
               "client_type": 3
             },
             {
-              "client_id": "557579110628-lfm7q0ches3h32c9tc4ld21usp7h6jfj.apps.googleusercontent.com",
+              "client_id": "557579110628-4ueku6n8pmvsnir5rvrtd5tb0skmg8pj.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.appSiar"
+                "bundle_id": "com.example.siar"
               }
             }
           ]

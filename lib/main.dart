@@ -1,9 +1,16 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+// Firebase
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'firebase_options.dart';
+// Screens
 import 'package:siar/screens/add_product_screen.dart';
 import 'package:siar/screens/home_screen.dart';
+import 'package:siar/screens/signin_screen.dart';
+import 'package:siar/screens/profile_screen.dart';
+// Theme
 import 'package:siar/theme/app_theme.dart';
-import 'firebase_options.dart';
+// Widgets
 import 'widgets/bottom_nav_bar.dart';
 
 void main() async {
@@ -23,10 +30,39 @@ class MyApp extends StatelessWidget {
       title: 'Siar App',
       theme: AppTheme.theme,
       debugShowCheckedModeBanner: false,
-      initialRoute: '/home',
+      home: const AuthWrapper(), // Cambiamos el punto de entrada a AuthWrapper
       routes: {
         '/home': (context) => const MainScreen(),
         '/add-product': (context) => const AddProductScreen(),
+        '/signin': (context) => SignInScreen(),
+        '/profile': (context) => const ProfileScreen(),
+      },
+    );
+  }
+}
+
+class AuthWrapper extends StatelessWidget {
+  const AuthWrapper({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        // Si el estado de autenticación está cargando
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        // Si el usuario no está autenticado, mostrar SignInScreen
+        if (!snapshot.hasData) {
+          return SignInScreen();
+        }
+
+        // Si el usuario está autenticado, mostrar MainScreen
+        return const MainScreen();
       },
     );
   }
@@ -50,13 +86,10 @@ class _MainScreenState extends State<MainScreen> {
     ),
     const AddProductScreen(),
     Scaffold(
-      appBar: AppBar(title: Text('Notificaciones')),
+      appBar: AppBar(title: const Text('Notificaciones')),
       body: const Center(child: Text('No hay notificaciones')),
     ),
-    Scaffold(
-      appBar: AppBar(title: Text('Cuenta')),
-      body: const Center(child: Text('Información de tu cuenta')),
-    ),
+    const ProfileScreen(),
   ];
 
   @override

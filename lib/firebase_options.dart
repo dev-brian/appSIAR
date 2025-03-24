@@ -66,6 +66,7 @@ class DefaultFirebaseOptions {
     projectId: 'siar-e30b2',
     databaseURL: 'https://siar-e30b2-default-rtdb.firebaseio.com',
     storageBucket: 'siar-e30b2.firebasestorage.app',
+    androidClientId: '557579110628-3b8ul9eir3sjaql5adfqkg77v18v5j1f.apps.googleusercontent.com',
     iosClientId: '557579110628-4ueku6n8pmvsnir5rvrtd5tb0skmg8pj.apps.googleusercontent.com',
     iosBundleId: 'com.example.siar',
   );
@@ -77,6 +78,7 @@ class DefaultFirebaseOptions {
     projectId: 'siar-e30b2',
     databaseURL: 'https://siar-e30b2-default-rtdb.firebaseio.com',
     storageBucket: 'siar-e30b2.firebasestorage.app',
+    androidClientId: '557579110628-3b8ul9eir3sjaql5adfqkg77v18v5j1f.apps.googleusercontent.com',
     iosClientId: '557579110628-4ueku6n8pmvsnir5rvrtd5tb0skmg8pj.apps.googleusercontent.com',
     iosBundleId: 'com.example.siar',
   );
@@ -90,4 +92,5 @@ class DefaultFirebaseOptions {
     databaseURL: 'https://siar-e30b2-default-rtdb.firebaseio.com',
     storageBucket: 'siar-e30b2.firebasestorage.app',
   );
+
 }
