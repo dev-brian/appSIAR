@@ -45,6 +45,7 @@ dependencies:
   google_sign_in: ^6.3.0
   flutter_native_splash: ^2.4.5
   font_awesome_flutter: ^10.8.0
+  fl_chart: ^0.70.2
 
 dev_dependencies:
   flutter_test:

@@ -15,14 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "557579110628-3b8ul9eir3sjaql5adfqkg77v18v5j1f.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.app_siar",
-            "certificate_hash": "b65dcc351d013f6b6cb9e9b6164a9d765e3a82bb"
-          }
-        },
-        {
           "client_id": "557579110628-6vqf75snp5vti8660mtpb3dautqa2q8b.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -59,6 +51,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "557579110628-25rr08u9fs4rev12b04hua9qs4uchl5u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fire_crud",
+            "certificate_hash": "c48f219acfaaf40f86068fbf73817eab77c193fe"
+          }
+        },
+        {
           "client_id": "557579110628-6vqf75snp5vti8660mtpb3dautqa2q8b.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -94,6 +94,38 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "557579110628-3ot8psp6l276n2oot9etl2t4n7hi52nj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.siar",
+            "certificate_hash": "6ea9bee44843eb85a8d3f26ebae7359f548f6f77"
+          }
+        },
+        {
+          "client_id": "557579110628-7mrid4h2qct6kte4o3uovqfribesnv3i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.siar",
+            "certificate_hash": "a4baa5e86ba5e0d5db9746f4ff9675b86372f03c"
+          }
+        },
+        {
+          "client_id": "557579110628-a8j24n4f84eojkpfn9lfn6pc2cb48dth.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.siar",
+            "certificate_hash": "3163fb2d51a65c3324940c4ef340f99723798cec"
+          }
+        },
+        {
+          "client_id": "557579110628-st23t0k5u64qf309fu2b1f9pohpimaj5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.siar",
+            "certificate_hash": "3950725f8d4a0694429e66f050074c2130dc6437"
+          }
+        },
         {
           "client_id": "557579110628-6vqf75snp5vti8660mtpb3dautqa2q8b.apps.googleusercontent.com",
           "client_type": 3

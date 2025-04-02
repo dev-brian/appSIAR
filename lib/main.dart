@@ -8,6 +8,7 @@ import 'package:siar/screens/add_product_screen.dart';
 import 'package:siar/screens/home_screen.dart';
 import 'package:siar/screens/signin_screen.dart';
 import 'package:siar/screens/profile_screen.dart';
+import 'package:siar/screens/stadistic_screen.dart'; // Importamos la pantalla de estadísticas
 // Theme
 import 'package:siar/theme/app_theme.dart';
 // Widgets
@@ -34,8 +35,10 @@ class MyApp extends StatelessWidget {
       routes: {
         '/home': (context) => const MainScreen(),
         '/add-product': (context) => const AddProductScreen(),
-        '/signin': (context) => SignInScreen(),
+        '/signin': (context) => const SignInScreen(),
         '/profile': (context) => const ProfileScreen(),
+        '/statistics': (context) =>
+            PieChartScreen(), // Añadimos la ruta para las estadísticas
       },
     );
   }
@@ -47,6 +50,7 @@ class AuthWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
+      // Detecta el estado de autenticación del usuario
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         // Si el estado de autenticación está cargando
@@ -80,10 +84,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _screens = [
     const HomeScreen(),
-    Scaffold(
-      appBar: AppBar(title: const Text('Estadísticas')),
-      body: const Center(child: Text('No hay estadísticas disponibles')),
-    ),
+    PieChartScreen(), // Ahora la pantalla de estadísticas es la que aparece al seleccionar la segunda pestaña
     const AddProductScreen(),
     Scaffold(
       appBar: AppBar(title: const Text('Notificaciones')),
@@ -99,7 +100,12 @@ class _MainScreenState extends State<MainScreen> {
       bottomNavigationBar: BottomNavBar(
         currentIndex: _currentIndex,
         onTap: (index) {
-          if (index == 2) {
+          if (index == 1) {
+            // Al seleccionar la segunda pestaña (estadísticas)
+            setState(() {
+              _currentIndex = index;
+            });
+          } else if (index == 2) {
             // Navegar a AddProductScreen
             Navigator.pushNamed(context, '/add-product');
           } else {
