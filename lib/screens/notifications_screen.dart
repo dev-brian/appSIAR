@@ -44,6 +44,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     });
   }
 
+  String _formatTimestamp(String timestamp) {
+    // Devuelve el timestamp directamente, ya que está en el formato correcto
+    return timestamp;
+  }
+
   void _deleteNotification(String id) {
     // Elimina la notificación de Firebase
     _databaseRef.child(id).remove().then((_) {
@@ -72,24 +77,31 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               itemCount: _alertas.length,
               itemBuilder: (ctx, index) {
                 final alerta = _alertas[index];
-                return ListTile(
+                return ExpansionTile(
                   title: Text('Dispositivo: ${alerta['dispositivo']}'),
-                  subtitle: Text(
-                      'Tipo: ${alerta['tipo']} - Ubicación: ${alerta['ubicacion']}'),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      alerta['alarma'] == true
-                          ? const Icon(Icons.warning, color: Colors.red)
-                          : const Icon(Icons.check_circle, color: Colors.green),
-                      IconButton(
+                  subtitle: Text('Ubicación: ${alerta['ubicacion']}'),
+                  trailing: alerta['alarma'] == true
+                      ? const Icon(Icons.warning, color: Colors.red)
+                      : const Icon(Icons.check_circle, color: Colors.green),
+                  children: [
+                    ListTile(
+                      title: const Text('Detalles'),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('UID: ${alerta['uid']}'),
+                          Text(
+                              'Hora: ${_formatTimestamp(alerta['timestamp'])}'),
+                        ],
+                      ),
+                      trailing: IconButton(
                         icon: const Icon(Icons.delete, color: Colors.grey),
                         onPressed: () {
                           _deleteNotification(alerta['id']);
                         },
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 );
               },
             ),
