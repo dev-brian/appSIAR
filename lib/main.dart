@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // Firebase
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:siar/screens/notifications_screen.dart';
 import 'firebase_options.dart';
 // Screens
 import 'package:siar/screens/add_product_screen.dart';
@@ -38,7 +39,8 @@ class MyApp extends StatelessWidget {
         '/signin': (context) => const SignInScreen(),
         '/profile': (context) => const ProfileScreen(),
         '/statistics': (context) =>
-            PieChartScreen(), // Añadimos la ruta para las estadísticas
+            PieChartScreen(), //Añadimos la ruta para las estadísticas
+        '/notifications': (context) => NotificationsScreen(),
       },
     );
   }
@@ -86,10 +88,7 @@ class _MainScreenState extends State<MainScreen> {
     const HomeScreen(),
     PieChartScreen(), // Ahora la pantalla de estadísticas es la que aparece al seleccionar la segunda pestaña
     const AddProductScreen(),
-    Scaffold(
-      appBar: AppBar(title: const Text('Notificaciones')),
-      body: const Center(child: Text('No hay notificaciones')),
-    ),
+    const NotificationsScreen(), // Pantalla de notificaciones
     const ProfileScreen(),
   ];
 
@@ -100,14 +99,12 @@ class _MainScreenState extends State<MainScreen> {
       bottomNavigationBar: BottomNavBar(
         currentIndex: _currentIndex,
         onTap: (index) {
-          if (index == 1) {
-            // Al seleccionar la segunda pestaña (estadísticas)
-            setState(() {
-              _currentIndex = index;
-            });
-          } else if (index == 2) {
+          if (index == 2) {
             // Navegar a AddProductScreen
             Navigator.pushNamed(context, '/add-product');
+          } else if (index == 3) {
+            // Navegar a NotificationsScreen
+            Navigator.pushNamed(context, '/notifications');
           } else {
             setState(() {
               _currentIndex = index;
