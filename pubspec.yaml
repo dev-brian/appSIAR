@@ -46,6 +46,7 @@ dependencies:
   flutter_native_splash: ^2.4.5
   font_awesome_flutter: ^10.8.0
   fl_chart: ^0.70.2
+  flutter_launcher_icons: ^0.14.3
 
 dev_dependencies:
   flutter_test:
@@ -253,3 +254,9 @@ flutter_native_splash:
   #info_plist_files:
   #  - 'ios/Runner/Info-Debug.plist'
   #  - 'ios/Runner/Info-Release.plist'
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  # ios: true
+  image_path: "assets/images/logo3.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
