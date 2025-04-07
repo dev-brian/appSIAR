@@ -22,12 +22,20 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   }
 
   void _fetchData() {
-    _databaseRef.onValue.listen((event) {
+    _databaseRef.onValue.listen((event) async {
       final data = event.snapshot.value as Map<dynamic, dynamic>?;
 
       if (data != null) {
         final List<Map<String, dynamic>> loadedAlertas = [];
-        data.forEach((key, value) {
+
+        for (var entry in data.entries) {
+          final key = entry.key;
+          final value = entry.value;
+
+          // Buscar el producto relacionado en Firestore
+          final product =
+              await _firestoreService.getProductByRfid(value['uid']);
+
           loadedAlertas.add({
             'id': key,
             'alarma': value['alarma'],
@@ -36,8 +44,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             'tipo': value['tipo'],
             'ubicacion': value['ubicacion'],
             'uid': value['uid'],
+            'nombreProducto': product?['nombreProducto'] ??
+                'Desconocido', // Si no se encuentra, muestra "Desconocido"
           });
-        });
+        }
 
         // Ordenar las alertas por timestamp (más reciente primero)
         loadedAlertas.sort((a, b) {
@@ -125,7 +135,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               itemBuilder: (ctx, index) {
                 final alerta = _alertas[index];
                 return ExpansionTile(
-                  title: Text('Dispositivo: ${alerta['dispositivo']}'),
+                  title: Text('Producto: ${alerta['nombreProducto']}'),
                   subtitle: Text('Ubicación: ${alerta['ubicacion']}'),
                   trailing: alerta['alarma'] == true
                       ? const Icon(Icons.warning, color: Colors.red)
