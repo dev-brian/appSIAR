@@ -14,6 +14,7 @@ class AlertStatsScreen extends StatefulWidget {
 class _AlertStatsScreenState extends State<AlertStatsScreen> {
   final DatabaseReference _databaseRef =
       FirebaseDatabase.instance.ref('alertas/lecturas');
+
   Map<String, int> _alertasPorDia = {};
   Map<String, int> _alertasPorUbicacion = {};
 
@@ -35,7 +36,7 @@ class _AlertStatsScreenState extends State<AlertStatsScreen> {
           final fecha = value['timestamp'] ?? '';
           final ubicacion = value['ubicacion'] ?? 'desconocido';
 
-          // Convertir timestamp a fecha "yyyy-MM-dd"
+          // Convertir timestamp a fecha
           String dia = 'desconocido';
           try {
             final dateTime = DateTime.parse(fecha);
@@ -47,35 +48,163 @@ class _AlertStatsScreenState extends State<AlertStatsScreen> {
         });
 
         setState(() {
-          _alertasPorDia = SplayTreeMap.from(porDia); // ordena por fecha
+          _alertasPorDia = SplayTreeMap.from(porDia);
           _alertasPorUbicacion = porUbicacion;
         });
       }
     });
   }
 
+  Color _getBarColor(int value) {
+    if (value <= 2) return Colors.green;
+    if (value <= 5) return Colors.orange;
+    return Colors.red;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final totalAlertas = _alertasPorDia.values.fold(0, (a, b) => a + b);
+
     return Scaffold(
       appBar: AppBar(title: const Text('Estadísticas')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text(
+              '📋 Total de Alertas: $totalAlertas',
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 16),
             const Text("📊 Alertas por Día",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            SizedBox(height: 200, child: _BarChartWidget()),
+            SizedBox(height: 250, child: _BarChartWidget()),
+            const SizedBox(height: 10),
+            _buildLegend(),
             const SizedBox(height: 30),
             const Text("📍 Alertas por Ubicación",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            _buildUbicacionChart(),
+            const SizedBox(height: 10),
+            SizedBox(height: 250, child: _PieChartWidget()),
+            const SizedBox(height: 20),
+            _buildUbicacionList(),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildUbicacionChart() {
+  Widget _BarChartWidget() {
+    final keys = _alertasPorDia.keys.toList();
+    final values = _alertasPorDia.values.toList();
+
+    return BarChart(
+      BarChartData(
+        barTouchData: BarTouchData(
+          enabled: true,
+          touchTooltipData: BarTouchTooltipData(
+            //tooltipBackgroundColor: Colors.black87,
+            getTooltipItem: (group, groupIndex, rod, rodIndex) {
+              final fecha = keys[group.x.toInt()];
+              final cantidad = rod.toY.toInt();
+              return BarTooltipItem(
+                '$fecha\n$cantidad alertas',
+                const TextStyle(color: Colors.white),
+              );
+            },
+          ),
+        ),
+        borderData: FlBorderData(show: false),
+        titlesData: FlTitlesData(
+          leftTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              reservedSize: 40,
+              getTitlesWidget: (value, meta) {
+                return Text(
+                  value.toInt().toString(),
+                  style: const TextStyle(fontSize: 10),
+                );
+              },
+            ),
+          ),
+          bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              reservedSize: 40,
+              getTitlesWidget: (value, meta) {
+                if (value.toInt() < keys.length) {
+                  return Text(
+                    keys[value.toInt()],
+                    style: const TextStyle(fontSize: 10),
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+            ),
+          ),
+        ),
+        barGroups: List.generate(_alertasPorDia.length, (i) {
+          return BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                toY: values[i].toDouble(),
+                color: _getBarColor(values[i]),
+                width: 16,
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ],
+          );
+        }),
+      ),
+      swapAnimationDuration: const Duration(milliseconds: 600),
+      swapAnimationCurve: Curves.easeOut,
+    );
+  }
+
+  Widget _buildLegend() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: const [
+        _LegendItem(color: Colors.green, label: 'Bajo'),
+        SizedBox(width: 10),
+        _LegendItem(color: Colors.orange, label: 'Medio'),
+        SizedBox(width: 10),
+        _LegendItem(color: Colors.red, label: 'Alto'),
+      ],
+    );
+  }
+
+  Widget _PieChartWidget() {
+    if (_alertasPorUbicacion.isEmpty) return const Text("No hay datos.");
+
+    final total =
+        _alertasPorUbicacion.values.fold(0, (a, b) => a + b).toDouble();
+    final keys = _alertasPorUbicacion.keys.toList();
+
+    return PieChart(
+      PieChartData(
+        sections: _alertasPorUbicacion.entries.map((entry) {
+          final index = keys.indexOf(entry.key);
+          final value = entry.value.toDouble();
+          final percentage = (value / total * 100).toStringAsFixed(1);
+          return PieChartSectionData(
+            value: value,
+            title: '${entry.key}\n$percentage%',
+            color: Colors.primaries[index % Colors.primaries.length],
+            radius: 60,
+            titleStyle: const TextStyle(fontSize: 12, color: Colors.white),
+          );
+        }).toList(),
+        sectionsSpace: 4,
+        centerSpaceRadius: 30,
+      ),
+    );
+  }
+
+  Widget _buildUbicacionList() {
     return Column(
       children: _alertasPorUbicacion.entries.map((entry) {
         return ListTile(
@@ -86,21 +215,22 @@ class _AlertStatsScreenState extends State<AlertStatsScreen> {
       }).toList(),
     );
   }
+}
 
-  Widget _BarChartWidget() {
-    final barData = _alertasPorDia.entries.map((e) {
-      final index = _alertasPorDia.keys.toList().indexOf(e.key);
-      return BarChartRodData(toY: e.value.toDouble(), color: Colors.blue);
-    }).toList();
+class _LegendItem extends StatelessWidget {
+  final Color color;
+  final String label;
 
-    return BarChart(
-      BarChartData(
-        borderData: FlBorderData(show: false),
-        titlesData: FlTitlesData(show: false),
-        barGroups: List.generate(_alertasPorDia.length, (i) {
-          return BarChartGroupData(x: i, barRods: [barData[i]]);
-        }),
-      ),
+  const _LegendItem({required this.color, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(width: 12, height: 12, color: color),
+        const SizedBox(width: 4),
+        Text(label),
+      ],
     );
   }
 }
