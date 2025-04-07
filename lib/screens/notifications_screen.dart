@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:siar/services/firestore_service.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -11,6 +12,7 @@ class NotificationsScreen extends StatefulWidget {
 class _NotificationsScreenState extends State<NotificationsScreen> {
   final DatabaseReference _databaseRef = FirebaseDatabase.instance
       .ref('alertas/lecturas'); // Ruta en la base de datos
+  final FirestoreService _firestoreService = FirestoreService();
   List<Map<String, dynamic>> _alertas = [];
 
   @override
@@ -20,12 +22,20 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   }
 
   void _fetchData() {
-    _databaseRef.onValue.listen((event) {
+    _databaseRef.onValue.listen((event) async {
       final data = event.snapshot.value as Map<dynamic, dynamic>?;
 
       if (data != null) {
         final List<Map<String, dynamic>> loadedAlertas = [];
-        data.forEach((key, value) {
+
+        for (var entry in data.entries) {
+          final key = entry.key;
+          final value = entry.value;
+
+          // Buscar el producto relacionado en Firestore
+          final product =
+              await _firestoreService.getProductByRfid(value['uid']);
+
           loadedAlertas.add({
             'id': key,
             'alarma': value['alarma'],
@@ -34,7 +44,20 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             'tipo': value['tipo'],
             'ubicacion': value['ubicacion'],
             'uid': value['uid'],
+            'nombreProducto': product?['nombreProducto'] ??
+                'Desconocido', // Si no se encuentra, muestra "Desconocido"
           });
+        }
+
+        // Ordenar las alertas por timestamp (más reciente primero)
+        loadedAlertas.sort((a, b) {
+          try {
+            final timestampA = DateTime.parse(a['timestamp']);
+            final timestampB = DateTime.parse(b['timestamp']);
+            return timestampB.compareTo(timestampA); // Orden descendente
+          } catch (e) {
+            return 0; // Si ocurre un error, no cambia el orden
+          }
         });
 
         setState(() {
@@ -42,11 +65,6 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         });
       }
     });
-  }
-
-  String _formatTimestamp(String timestamp) {
-    // Devuelve el timestamp directamente, ya que está en el formato correcto
-    return timestamp;
   }
 
   void _deleteNotification(String id) {
@@ -65,6 +83,45 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     });
   }
 
+  void _showProductDetails(String uid) async {
+    // Busca el producto relacionado en Firestore
+    final product = await _firestoreService.getProductByRfid(uid);
+
+    if (product != null) {
+      // Muestra los detalles del producto en un cuadro de diálogo
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Detalles del Producto'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Nombre: ${product['nombreProducto']}'),
+              Text('Marca: ${product['marca']}'),
+              Text('Modelo: ${product['modelo']}'),
+              Text('Ubicación: ${product['ubicacion']}'),
+              Text('Estado: ${product['estado']}'),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(ctx).pop();
+              },
+              child: const Text('Cerrar'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      // Si no se encuentra el producto, muestra un mensaje
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Producto no encontrado')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +135,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               itemBuilder: (ctx, index) {
                 final alerta = _alertas[index];
                 return ExpansionTile(
-                  title: Text('Dispositivo: ${alerta['dispositivo']}'),
+                  title: Text('Producto: ${alerta['nombreProducto']}'),
                   subtitle: Text('Ubicación: ${alerta['ubicacion']}'),
                   trailing: alerta['alarma'] == true
                       ? const Icon(Icons.warning, color: Colors.red)
@@ -90,15 +147,25 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('UID: ${alerta['uid']}'),
-                          Text(
-                              'Hora: ${_formatTimestamp(alerta['timestamp'])}'),
+                          Text('Hora: ${alerta['timestamp']}'),
                         ],
                       ),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete, color: Colors.grey),
-                        onPressed: () {
-                          _deleteNotification(alerta['id']);
-                        },
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.info, color: Colors.blue),
+                            onPressed: () {
+                              _showProductDetails(alerta['uid']);
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete, color: Colors.grey),
+                            onPressed: () {
+                              _deleteNotification(alerta['id']);
+                            },
+                          ),
+                        ],
                       ),
                     ),
                   ],

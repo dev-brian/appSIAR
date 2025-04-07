@@ -8,7 +8,8 @@ class AppTheme {
   // Colores adicionales
   static const Color lightBlue = Color(0xFF98C0D9); // Azul claro
   static const Color deepBlue = Color(0xFF155F82); // Azul profundo
-  static const Color softBeige = Color(0xFFF4EADF); // Beige suave
+  static const Color softBeige =
+      Color.fromARGB(255, 255, 255, 255); // Beige suave
   // Colores basicos
   static const Color white = Colors.white;
   static const Color black = Colors.black;
