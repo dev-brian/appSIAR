@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 // Firebase
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:siar/screens/notifications_screen.dart';
+import 'package:siar/screens/alert_stats_screen.dart';
 import 'firebase_options.dart';
 // Screens
 import 'package:siar/screens/add_product_screen.dart';
 import 'package:siar/screens/home_screen.dart';
 import 'package:siar/screens/signin_screen.dart';
 import 'package:siar/screens/profile_screen.dart';
-import 'package:siar/screens/stadistic_screen.dart'; // Importamos la pantalla de estadísticas
+import 'package:siar/screens/notifications_screen.dart';
+//import 'package:siar/screens/stadistic_screen.dart'; // Importamos la pantalla de estadísticas
 // Theme
 import 'package:siar/theme/app_theme.dart';
 // Widgets
@@ -38,9 +39,8 @@ class MyApp extends StatelessWidget {
         '/add-product': (context) => const AddProductScreen(),
         '/signin': (context) => const SignInScreen(),
         '/profile': (context) => const ProfileScreen(),
-        '/statistics': (context) =>
-            PieChartScreen(), //Añadimos la ruta para las estadísticas
-        '/notifications': (context) => NotificationsScreen(),
+        '/statistics': (context) => const AlertStatsScreen(),
+        '/notifications': (context) => const NotificationsScreen(),
       },
     );
   }
@@ -64,7 +64,7 @@ class AuthWrapper extends StatelessWidget {
 
         // Si el usuario no está autenticado, mostrar SignInScreen
         if (!snapshot.hasData) {
-          return SignInScreen();
+          return const SignInScreen();
         }
 
         // Si el usuario está autenticado, mostrar MainScreen
@@ -86,7 +86,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _screens = [
     const HomeScreen(),
-    PieChartScreen(), // Ahora la pantalla de estadísticas es la que aparece al seleccionar la segunda pestaña
+    const AlertStatsScreen(), // Ahora la pantalla de estadísticas es la que aparece al seleccionar la segunda pestaña
     const AddProductScreen(),
     const NotificationsScreen(), // Pantalla de notificaciones
     const ProfileScreen(),
