@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:siar/services/firestore_service.dart';
+import 'dart:async';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -14,6 +15,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       .ref('alertas/lecturas'); // Ruta en la base de datos
   final FirestoreService _firestoreService = FirestoreService();
   List<Map<String, dynamic>> _alertas = [];
+  StreamSubscription<DatabaseEvent>? _subscription;
 
   @override
   void initState() {
@@ -22,7 +24,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   }
 
   void _fetchData() {
-    _databaseRef.onValue.listen((event) async {
+    _subscription = _databaseRef.onValue.listen((event) async {
       final data = event.snapshot.value as Map<dynamic, dynamic>?;
 
       if (data != null) {
@@ -32,11 +34,16 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           final key = entry.key;
           final value = entry.value;
 
+          // Verifica si ya se procesó esta alerta
+          if (loadedAlertas.any((alerta) => alerta['id'] == key)) {
+            continue; // Si ya existe, omite esta entrada
+          }
+
           // Buscar el producto relacionado en Firestore
           final product =
               await _firestoreService.getProductByRfid(value['uid']);
 
-          loadedAlertas.add({
+          final alertData = {
             'id': key,
             'alarma': value['alarma'],
             'dispositivo': value['dispositivo'],
@@ -44,27 +51,28 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             'tipo': value['tipo'],
             'ubicacion': value['ubicacion'],
             'uid': value['uid'],
-            'nombreProducto': product?['nombreProducto'] ??
-                'Desconocido', // Si no se encuentra, muestra "Desconocido"
-          });
-        }
+            'nombreProducto': product?['nombreProducto'] ?? 'Desconocido',
+            'categoria': product?['categoria'] ?? 'Desconocido',
+          };
 
-        // Ordenar las alertas por timestamp (más reciente primero)
-        loadedAlertas.sort((a, b) {
-          try {
-            final timestampA = DateTime.parse(a['timestamp']);
-            final timestampB = DateTime.parse(b['timestamp']);
-            return timestampB.compareTo(timestampA); // Orden descendente
-          } catch (e) {
-            return 0; // Si ocurre un error, no cambia el orden
-          }
-        });
+          // Agregar alerta a Firestore
+          await _firestoreService.addAlertToFirestore(value['uid'], alertData);
+
+          loadedAlertas.add(alertData);
+        }
 
         setState(() {
           _alertas = loadedAlertas;
         });
       }
     });
+  }
+
+  @override
+  void dispose() {
+    // Cancelar la suscripción a Firebase
+    _subscription?.cancel();
+    super.dispose();
   }
 
   void _deleteNotification(String id) {
