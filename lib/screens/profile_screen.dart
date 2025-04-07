@@ -118,17 +118,12 @@ class _ProfileScreenState extends State<ProfileScreen>
             child: Column(
               children: [
                 // AppBar personalizado
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 8.0),
+                const Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                   child: Row(
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Colors.white),
-                        onPressed: () =>
-                            Navigator.pushReplacementNamed(context, '/home'),
-                      ),
-                      const Text(
+                      Text(
                         'Mi Perfil',
                         style: TextStyle(
                           color: Colors.white,
@@ -136,7 +131,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const Spacer(),
+                      Spacer(),
                     ],
                   ),
                 ),
@@ -150,8 +145,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
                           children: [
-                            const SizedBox(height: 20),
-
                             // Foto de perfil con animación
                             Hero(
                               tag: 'profile-image',

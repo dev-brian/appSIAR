@@ -35,12 +35,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: const AuthWrapper(), // Cambiamos el punto de entrada a AuthWrapper
       routes: {
-        '/home': (context) => const MainScreen(),
-        '/add-product': (context) => const AddProductScreen(),
         '/signin': (context) => const SignInScreen(),
-        '/profile': (context) => const ProfileScreen(),
-        '/statistics': (context) => const AlertStatsScreen(),
-        '/notifications': (context) => const NotificationsScreen(),
       },
     );
   }
@@ -61,12 +56,10 @@ class AuthWrapper extends StatelessWidget {
             body: Center(child: CircularProgressIndicator()),
           );
         }
-
         // Si el usuario no está autenticado, mostrar SignInScreen
         if (!snapshot.hasData) {
           return const SignInScreen();
         }
-
         // Si el usuario está autenticado, mostrar MainScreen
         return const MainScreen();
       },
@@ -86,30 +79,25 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _screens = [
     const HomeScreen(),
-    const AlertStatsScreen(), // Ahora la pantalla de estadísticas es la que aparece al seleccionar la segunda pestaña
+    const AlertStatsScreen(),
     const AddProductScreen(),
-    const NotificationsScreen(), // Pantalla de notificaciones
+    const NotificationsScreen(),
     const ProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[_currentIndex],
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _screens,
+      ),
       bottomNavigationBar: BottomNavBar(
         currentIndex: _currentIndex,
         onTap: (index) {
-          if (index == 2) {
-            // Navegar a AddProductScreen
-            Navigator.pushNamed(context, '/add-product');
-          } else if (index == 3) {
-            // Navegar a NotificationsScreen
-            Navigator.pushNamed(context, '/notifications');
-          } else {
-            setState(() {
-              _currentIndex = index;
-            });
-          }
+          setState(() {
+            _currentIndex = index;
+          });
         },
       ),
     );
