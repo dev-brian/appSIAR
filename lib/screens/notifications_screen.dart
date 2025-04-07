@@ -73,6 +73,45 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     });
   }
 
+  void _showProductDetails(String uid) async {
+    // Busca el producto relacionado en Firestore
+    final product = await _firestoreService.getProductByRfid(uid);
+
+    if (product != null) {
+      // Muestra los detalles del producto en un cuadro de diálogo
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Detalles del Producto'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Nombre: ${product['nombreProducto']}'),
+              Text('Marca: ${product['marca']}'),
+              Text('Modelo: ${product['modelo']}'),
+              Text('Ubicación: ${product['ubicacion']}'),
+              Text('Estado: ${product['estado']}'),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(ctx).pop();
+              },
+              child: const Text('Cerrar'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      // Si no se encuentra el producto, muestra un mensaje
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Producto no encontrado')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,11 +140,22 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                           Text('Hora: ${alerta['timestamp']}'),
                         ],
                       ),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete, color: Colors.grey),
-                        onPressed: () {
-                          _deleteNotification(alerta['id']);
-                        },
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.info, color: Colors.blue),
+                            onPressed: () {
+                              _showProductDetails(alerta['uid']);
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete, color: Colors.grey),
+                            onPressed: () {
+                              _deleteNotification(alerta['id']);
+                            },
+                          ),
+                        ],
                       ),
                     ),
                   ],

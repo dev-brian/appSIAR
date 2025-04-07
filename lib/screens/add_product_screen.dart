@@ -112,7 +112,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
       if (mounted) {
         showSnackBar('¡Producto registrado exitosamente!');
         _clearFields(); // Limpia los campos y restablece el formulario
-        Navigator.of(context).pop(); // Cierra la pantalla
       }
     } catch (e) {
       showSnackBar('Error: $e');
