@@ -41,6 +41,13 @@ class _PieChartScreenState extends State<PieChartScreen> {
       });
     }
 
+    // Ordenar los detalles por timestamp (más reciente primero)
+    details.sort((a, b) {
+      final timestampA = DateTime.tryParse(a['timestamp']) ?? DateTime(0);
+      final timestampB = DateTime.tryParse(b['timestamp']) ?? DateTime(0);
+      return timestampB.compareTo(timestampA); // Orden descendente
+    });
+
     setState(() {
       categoryCounts = counts;
       deviceDetails = details; // Actualizar los detalles de los dispositivos
