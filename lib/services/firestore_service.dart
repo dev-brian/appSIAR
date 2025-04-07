@@ -34,4 +34,21 @@ class FirestoreService {
   Future<void> addProduct(String collection, Map<String, dynamic> data) {
     return _firestore.collection(collection).add(data);
   }
+
+  Future<Map<String, dynamic>?> getProductByRfid(String idRfid) async {
+    try {
+      final querySnapshot = await _firestore
+          .collection('productos')
+          .where('idRfid', isEqualTo: idRfid)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        return querySnapshot.docs.first.data();
+      }
+    } catch (e) {
+      print('Error al buscar producto: $e');
+    }
+    return null;
+  }
 }

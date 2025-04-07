@@ -86,7 +86,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _screens = [
     const HomeScreen(),
-    PieChartScreen(), // Ahora la pantalla de estadísticas es la que aparece al seleccionar la segunda pestaña
+    PieChartScreen(), // Pantalla de estadísticas
     const AddProductScreen(),
     const NotificationsScreen(), // Pantalla de notificaciones
     const ProfileScreen(),
@@ -95,21 +95,14 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[_currentIndex],
+      body: _screens[_currentIndex], // Cambia el contenido según el índice
       bottomNavigationBar: BottomNavBar(
         currentIndex: _currentIndex,
         onTap: (index) {
-          if (index == 2) {
-            // Navegar a AddProductScreen
-            Navigator.pushNamed(context, '/add-product');
-          } else if (index == 3) {
-            // Navegar a NotificationsScreen
-            Navigator.pushNamed(context, '/notifications');
-          } else {
-            setState(() {
-              _currentIndex = index;
-            });
-          }
+          setState(() {
+            _currentIndex =
+                index; // Actualiza el índice para cambiar de pantalla
+          });
         },
       ),
     );

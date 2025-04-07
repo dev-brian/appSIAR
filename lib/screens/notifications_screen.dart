@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:siar/services/firestore_service.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -11,6 +12,7 @@ class NotificationsScreen extends StatefulWidget {
 class _NotificationsScreenState extends State<NotificationsScreen> {
   final DatabaseReference _databaseRef = FirebaseDatabase.instance
       .ref('alertas/lecturas'); // Ruta en la base de datos
+  final FirestoreService _firestoreService = FirestoreService();
   List<Map<String, dynamic>> _alertas = [];
 
   @override
@@ -37,16 +39,22 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           });
         });
 
+        // Ordenar las alertas por timestamp (más reciente primero)
+        loadedAlertas.sort((a, b) {
+          try {
+            final timestampA = DateTime.parse(a['timestamp']);
+            final timestampB = DateTime.parse(b['timestamp']);
+            return timestampB.compareTo(timestampA); // Orden descendente
+          } catch (e) {
+            return 0; // Si ocurre un error, no cambia el orden
+          }
+        });
+
         setState(() {
           _alertas = loadedAlertas;
         });
       }
     });
-  }
-
-  String _formatTimestamp(String timestamp) {
-    // Devuelve el timestamp directamente, ya que está en el formato correcto
-    return timestamp;
   }
 
   void _deleteNotification(String id) {
@@ -90,8 +98,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('UID: ${alerta['uid']}'),
-                          Text(
-                              'Hora: ${_formatTimestamp(alerta['timestamp'])}'),
+                          Text('Hora: ${alerta['timestamp']}'),
                         ],
                       ),
                       trailing: IconButton(
